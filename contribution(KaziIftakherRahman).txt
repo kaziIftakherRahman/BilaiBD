@@ -12,6 +12,9 @@ path('searchVets', views.searchVets, name='searchVets'),
 
 ------------------------Views------------------------
 
+from .models import vets
+
+
 def viewAllVets(request):
     vet_list = vets.objects.all()
     return render(request,'vetPoint.html',{'vet_list':vet_list})
