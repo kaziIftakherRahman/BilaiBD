@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'index-elements.css' %}" />
+    <link rel="stylesheet" href="{% static 'index-style.css' %}" />
+  </head>
+  <body id="root-container" style="margin: 0">
+    {% block content %} {% if user.is_authenticated %} Hi {{ user.username }}!
+    {% else %}
+    <h1>Login Unsuccessful</h1>
+    {% endif %} 
+    
+    <div
+      data-element-behavior="menu"
+      id="menu-id-0-"
+      data-element-type="section"
+    >
+      <div id="container-id-6-" data-element-type="container">
+        <a
+          id="image-id-5-"
+          data-element-type="image"
+          class="clickable"
+          href="{% url 'index' %}"
+          ><img id="element-id-10-" src="{% static '-project-image-4.png' %}"
+        /></a>
+
+        <div id="container-id-4-" data-element-type="container">
+          <a
+            id="button-id-4-"
+            data-element-type="button"
+            href="https://twitter.com/?lang=en"
+            ><span id="element-id-3-">Cat Diagnosis</span></a
+          ><a
+            id="button-id-9-"
+            data-element-type="button"
+            href="{% url 'vetPoint' %}"
+            ><span id="element-id-8-">Vet Point</span></a
+          ><a
+            id="button-id-20-"
+            data-element-type="button"
+            href="{% url 'aboutUs' %}"
+            ><span id="element-id-19-">About Us</span></a
+          >
+
+          <!-- Profile Page -->
+
+          <a
+            id="button-id-4-"
+            data-element-type="button"
+            href="{% url 'userProfile' %}"
+            ><span id="element-id-3-">Catto Profile</span></a
+          >
+
+
+
+          <!-- logout button -->
+          <a id="button-id-10-" data-element-type="button" href="/signout"
+            ><span id="element-id-9-">Log out</span></a
+          >
+        </div>
+      </div>
+      
+    </div>
+
+    <div style = "padding-top: 100px;padding-left: 400px;padding-right: 400px;padding-bottom: 100px;">
+
+      <div class="card">
+        <div class="card-header">
+         <h2> {{user.username}}</h2>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Username: {{user.username}}</h5>
+          <p class="card-text">
+            
+            <strong>Email:</strong> {{ user.email }}<br>
+           
+       
+          </p>
+          
+        </div>
+      </div>
+
+  
+
+    {% endblock %}
+
+
+
+
+  </div>
+
+
+    
+
+
+      <!-- FOOTER -->
+      <div id="section-id-10-" data-element-type="section">
+        <div id="container-id-11-" data-element-type="container">
+          <div id="container-id-68-" data-element-type="container">
+            <div id="container-id-35-" data-element-type="container">
+              <p id="text-id-29-" data-element-type="text">BilaiBD</p>
+              <div id="container-id-30-" data-element-type="container">
+                <a
+                  id="button-id-31-"
+                  data-element-type="button"
+                  href="https://twitter.com/?lang=en"
+                  ><span id="element-id-32-">index</span></a
+                >
+              </div>
+            </div>
+
+
+
+            <div id="container-id-12-" data-element-type="container">
+              <p id="text-id-16-" data-element-type="text">Features</p>
+              <div id="container-id-15-" data-element-type="container">
+                <a
+                  id="button-id-38-"
+                  data-element-type="button"
+                  href="https://twitter.com/?lang=en"
+                  ><span id="element-id-37-">Cat Profile</span></a
+                ><a
+                  id="button-id-16-"
+                  data-element-type="button"
+                  href="https://twitter.com/?lang=en"
+                  ><span id="element-id-15-">Cat Diagnosis</span></a
+                ><a
+                  id="button-id-14-"
+                  data-element-type="button"
+                  href="https://twitter.com/?lang=en"
+                  ><span id="element-id-13-">Vet Point</span></a
+                >
+              </div>
+            </div>
+
+
+            <div id="container-id-53-" data-element-type="container">
+              <p id="text-id-47-" data-element-type="text">Contact</p>
+              <div id="container-id-48-" data-element-type="container">
+                <a id="button-id-44-" data-element-type="button" href="mailto:"
+                  ><span id="element-id-43-">Email</span></a
+                ><a
+                  id="button-id-48-"
+                  data-element-type="button"
+                  href="https://twitter.com/?lang=en"
+                  ><span id="element-id-47-">Facebook</span></a
+                >
+              </div>
+            </div>
+          </div>
+          <p id="text-id-70-" data-element-type="text">
+            © 2023 BilaiBD, Inc. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
