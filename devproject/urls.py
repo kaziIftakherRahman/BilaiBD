@@ -31,6 +31,8 @@ urlpatterns = [
     path('aboutUs/', views.aboutUs, name='aboutUs'),
     path('vetPoint/', views.viewAllVets, name='vetPoint'),
     path('searchVets', views.searchVets, name='searchVets'),
+    path('aCatProfile/', views.aCatProfile, name='aCatProfile'),
+    path('aCatProfileEdit/', views.aCatProfileEdit, name='aCatProfileEdit'),
     
 ]
 
