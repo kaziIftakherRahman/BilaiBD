@@ -62,6 +62,13 @@ def index(request):
 def aboutUs(request):
     return render(request, 'aboutUs.html')
 
+def aCatProfile(request):
+    vet_list = vets.objects.all()
+    return render(request, 'aCatProfile.html',{'vet_list':vet_list})
+
+def aCatProfileEdit(request):
+    return render(request, 'aCatProfileEdit.html')
+
 def userProfile(request):
     
     return render(request, 'userProfile.html')
