@@ -36,6 +36,12 @@
         /></a>
         <div id="container-id-55-" data-element-type="container">
           <a
+            id="button-id-4-"
+            data-element-type="button"
+            href="{% url 'aCatProfile' %}"
+            ><span id="element-id-3-">Catto Profile</span></a
+          >
+          <a
             id="button-id-56-"
             data-element-type="button"
             href="catDiagnosis.html"
@@ -52,15 +58,6 @@
             ><span id="element-id-61-">About Us</span></a
           >
 
-          <!-- Profile Page -->
-
-          <a
-            id="button-id-4-"
-            data-element-type="button"
-            href="{% url 'userProfile' %}"
-            ><span id="element-id-3-">Catto Profile</span></a
-          >
-
           <a id="button-id-64-" data-element-type="button" href="/signout"
             ><span id="element-id-65-">Log out</span></a
           >
@@ -69,8 +66,15 @@
     </div>
 
 
+
+
+
     <div id="content-container">
+
+
       <div id="container-id-31-" data-element-type="container">
+
+
         <p id="text-id-32-" data-element-type="text">
           <span id="element-id-33-"
             >&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -84,13 +88,12 @@
             {% csrf_token %}
             <input type="search" class="form-control me-3" placeholder="Enter Location" aria-label="search" aria-describedby="button-addon2"
             name="searched">
-          <button class="btn btn-light" type="submit" id="button-addon2">Search</button>
+          <button class="btn btn-outline-dark" type="submit" id="button-addon2">Search</button>
           </form>
           
         
-        
-
-        
+      
+    
       </div>
 
       
@@ -102,16 +105,52 @@
         id="section-id-57-"
         data-element-type="section"
         contenteditable="false"
-        style = "padding-top: 50px"
+        
       >
+
+
+
+      <div class="row row-cols-1 row-cols-md-4">
+        {% for vts in vet_list %}
+        <div class="col mb-4" style="display:flex;">
+          <div class="card">
+  
+            <div class="card-body">
+              <h2 class="card-title">{{vts.vName}}</h2>
+              <p class="card-text">
+                <strong>{{vts.vLocation}}</strong> <br/> 
+                <strong>Address:</strong> {{vts.vAddress}}<br> 
+                <strong>Phone:</strong> {{vts.vPhone}}
+              </p>
+              
+              
+
+            </div>
+            <div style="margin-bottom:15px; padding:10px">
+              <button type="button" class="btn btn-outline-dark">Get Location</button>
+              <button type="button" class="btn btn-outline-dark">Get Location</button>
+              </div>
+            
+          </div>
+        </div>
+        {% endfor %}
+        
+      </div>
+
+
 
       
 
-      <ul>
+      
+    
 
-        {% for vts in vet_list %}
+        
+ <!--
+    <ul>
+        
 
-        <div class="card">
+        <div class="card-group" >
+          {% for vts in vet_list %}
           <div class="card-header">
            <h2> {{vts.vName}}</h2>
           </div>
@@ -125,24 +164,22 @@
             </p>
             
           </div>
+          <br/>
+          {% endfor %}
         </div>
-
-
-        
-          
-        
-  
-      
-        <!--{{vts.vName}},{{vts.vAddress}},{{vts.vPhone}}, {{vts.vLocation}}-->
 
         <br/>
       
-        {% endfor %}
+    
+        
       </ul>
+      
   
         
 
       </div>
+
+    -->
 
       
       
