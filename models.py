@@ -10,5 +10,5 @@ class vets(models.Model):
     class Meta:
         db_table='vets'
 
-#made this on 29 Oct 1:04
+ #made this on 29 Oct 
 	
