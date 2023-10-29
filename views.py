@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
@@ -11,6 +11,7 @@ from .models import userProfile
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from .models import Cart
 # Create your views here.
 
 
@@ -127,3 +128,79 @@ def searchProducts(request):
     else:
         return render(request, 'searchProducts.html',
                       {})
+
+
+@login_required
+def add_to_cart(request, product_id):
+    product = products.objects.get(pk=product_id)
+
+    # Check if the item is already in the user's cart
+    cart_item, created = Cart.objects.get_or_create(
+        user=request.user, product=product, defaults={'quantity': 1})
+
+    # If the item is already in the cart, increase the quantity
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+
+    # You can change this URL to the page where the user can view their cart
+    return redirect('/view_cart')
+
+
+@login_required
+def view_cart(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    grand_total_cart_price = sum(
+        item.product.price * item.quantity for item in cart_items)
+    return render(request, 'view_cart.html', {'cart_items': cart_items, 'grand_total_cart_price': grand_total_cart_price})
+
+
+@login_required
+def remove_from_cart(request, cart_item_id):
+    cart_item = get_object_or_404(Cart, pk=cart_item_id, user=request.user)
+    cart_item.delete()
+    return redirect('/view_cart')
+
+
+@login_required
+def reduce_quantity(request, cart_item_id):
+    cart_item = get_object_or_404(Cart, pk=cart_item_id, user=request.user)
+
+    # If the quantity is more than 1, reduce it, else remove from cart
+    if cart_item.quantity > 1:
+        cart_item.quantity -= 1
+        cart_item.save()
+
+    return redirect('/view_cart')
+
+
+@login_required
+def increase_quantity(request, cart_item_id):
+    cart_item = get_object_or_404(Cart, pk=cart_item_id, user=request.user)
+    cart_item.quantity += 1
+    cart_item.save()
+
+    return redirect('view_cart')
+
+
+@login_required
+def clear_cart(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    cart_items.delete()
+    return redirect('view_cart')
+
+
+@login_required
+def checkout(request):
+    cart_items = Cart.objects.filter(user=request.user)
+
+    # Update stock quantity and remove items from the cart during checkout
+    for cart_item in cart_items:
+        product = cart_item.product
+        product.stock_quantity -= cart_item.quantity
+        product.save()
+
+    # Clear the cart after checkout
+    cart_items.delete()
+
+    return redirect('/view_cart')

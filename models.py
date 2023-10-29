@@ -45,3 +45,9 @@ class userProfile(models.Model):
 
     def str(self):
         return self.user.username
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(products, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
