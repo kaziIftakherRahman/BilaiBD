@@ -140,14 +140,15 @@
                   id="button-id-64-"
                   style="padding: 10px; margin-top: 20px; width: 150px"
                   data-element-type="button"
-                  href="//twitter.com/"
-                  ><span id="element-id-64-">Add to Cart</span></a
+                  href="{% url 'add_to_cart' pr.id %}"
                 >
+                  <span id="element-id-64-">Add to Cart</span>
+                </a>
                 <a
                   id="button-id-64-"
                   style="padding: 10px; margin-top: 20px; width: 150px"
                   data-element-type="button"
-                  href="//twitter.com/"
+                  href="{% url 'add_to_cart' pr.id %}"
                   ><span id="element-id-64-">More Info</span></a
                 >
               </div>
