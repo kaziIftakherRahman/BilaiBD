@@ -134,7 +134,7 @@
                   id="button-id-64-"
                   style="padding: 10px; margin-top: 20px; width: 150px"
                   data-element-type="button"
-                  {% if pr.stock_quantity == 0 %}
+                  {% if productFound.stock_quantity == 0 %}
                     onclick="alert('Sorry, this item is out of stock.'); return false;"
                   {% else %}
                     href="{% url 'add_to_cart' productFound.id %}"
