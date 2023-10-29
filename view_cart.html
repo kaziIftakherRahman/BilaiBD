@@ -1,69 +1,116 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <!-- Your head content here -->
+    <meta charset="utf-8" />
+    <title>aboutus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
+    <link
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css "
+
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'addToCart-elements.css' %}" />
+    <link rel="stylesheet" href="{% static 'addToCart-style.css' %}" />
+    <link rel="stylesheet" href="{% static 'cart.css' %}" />
   </head>
-  <body>
-    <h1>Your Cart</h1>
-
-    {% if cart_items %}
-    <table>
-      <thead>
-        <tr>
-          <th>Product Name</th>
-          <th>Price</th>
-          <th>Quantity</th>
-          <th>Total Price</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for cart_item in cart_items %}
-        <tr>
-          <td>{{ cart_item.product.product_name }}</td>
-          <td>${{ cart_item.product.price }}</td>
-          <td>{{ cart_item.quantity }}</td>
-          <td>
-            ${{
-            cart_item.product.price|floatformat:2|mul:cart_item.quantity|floatformat:2
-            }}
-          </td>
-          <td>
-            <a href="{% url 'remove_from_cart' cart_item.id %}">Remove</a>
-            <a href="{% url 'reduce_quantity' cart_item.id %}"
-              >Reduce Quantity</a
-            >
-            <a href="{% url 'increase_quantity' cart_item.id %}"
-              >Increase Quantity</a
-            >
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    <p>Grand Total Cart Price: ${{ grand_total_cart_price|floatformat:2 }}</p>
-
-    <!-- Add the checkout button here -->
-    <form action="{% url 'checkout' %}" method="post">
-      {% csrf_token %}
-      <button type="submit">Checkout</button>
-    </form>
-
-    <!-- Change the Clear Cart link to a button -->
-    <form action="{% url 'clear_cart' %}" method="post">
-      {% csrf_token %}
-      <button type="submit">Clear Cart</button>
-    </form>
-
+  <body id="root-container" style="margin: 0">
+    {% block content %} {% if user.is_authenticated %}
     {% else %}
-    <p>Your cart is empty. Proceed to homepage.</p>
-    <a href="{% url 'index' %}">Home</a>
-    {% endif %}
+    <h1>Login Unsuccessful</h1>
+    {% endif %} {% endblock %}
 
-    <form action="{% url 'catProducts' %}" method="post">
-      {% csrf_token %}
-      <button type="submit">Back to Products Page</button>
-    </form>
+  {% if cart_items %}
+     
+
+    <div class="card">
+      
+      <div class="row">
+          <div class="col-md-8 cart">
+              <div class="title">
+                  <div class="row">
+                      <div class="col"><h4><b>Your Cart</b></h4></div>
+                      
+                  </div>
+              </div>    
+
+
+              {% for cart_item in cart_items %}
+              <div class="row border-top border-bottom">
+                  <div class="row main align-items-center">
+                      <div class="col-2"><img class="img-fluid" src="{{ cart_item.product.productPic.url }}"></div>
+                      <div class="col">
+                        <!--Product Name-->
+                          
+                          <div class="row">{{ cart_item.product.product_name }}</div>
+                      </div>
+                      <div class="col">
+                          <!--decrease-->
+                          <a href="{% url 'reduce_quantity' cart_item.id %}">-</a>
+                          <a href="#" class="border">{{ cart_item.quantity }}</a>
+                          <!--increase-->
+                          <a href="{% url 'increase_quantity' cart_item.id %}">+</a>
+                      </div>
+                      <div class="col">{{ cart_item.product.price }}
+                        <!--Remove from cart-->
+                        <span class="close">
+                          <a href="{% url 'remove_from_cart' cart_item.id %}" >&#10005;</a>
+                        </span>
+                      </div>
+                  </div>
+              </div>
+              {% endfor %}
+              
+
+
+              <div class="back-to-shop">
+
+                <a href="{% url 'catProducts' %}"><button type="button" class="btn btn-outline-dark">Add more products</button></a>
+                
+                <form action="{% url 'clear_cart' %}" method="post">
+                  {% csrf_token %}
+                  <button class="btn btn-outline-dark" type="submit">Clear Cart</button>
+                </form>
+                
+              </div>
+          </div>
+
+
+          <div class="col-md-4 summary">
+              <div><h5><b>Summary</b></h5></div>
+  
+              <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                  <div class="col"><strong>TOTAL PRICE</strong></div>
+                  <div class="col text-right">{{ grand_total_cart_price|floatformat:2 }}</div>
+              </div>
+
+              <form action="{% url 'checkout' %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-outline-dark" type="submit">Checkout</button>
+              </form>
+              
+
+          </div>
+      </div>
+      
+
+  </div>
+
+  {% else %}
+  <div style="padding:25em; margin-left:17em">
+    <p>
+      <h1>Proceed to products?</h1>
+      <a href="{% url 'catProducts' %}"><button type="button" class="btn btn-outline-dark">Back to Products</button></a>
+    </p>
+  </div>    
+      {% endif %}
+   
   </body>
 </html>

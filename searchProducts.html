@@ -107,9 +107,10 @@
   
       <br/>
 
-      <ul>
+      <div class="row row-cols-1 row-cols-md-4">
 
         {% for productFound in productResult %}
+        <div class="col mb-4" style="display:flex;">
         <div class="card">
               {% if productFound.productPic %}
 
@@ -129,18 +130,27 @@
                 <strong>description:</strong> {{productFound.description}}<br>
                 <strong>price:</strong> {{productFound.price}}<br>
                 <strong>stock_quantity:</strong> {{productFound.stock_quantity}}
-                <a id="button-id-64-" style = "padding: 10px; margin-top: 20px; width: 150px;"  data-element-type="button" href="//twitter.com/"
-                ><span id="element-id-64-">Add to Cart</span></a
+                  <a
+                  id="button-id-64-"
+                  style="padding: 10px; margin-top: 20px; width: 150px"
+                  data-element-type="button"
+                  {% if pr.stock_quantity == 0 %}
+                    onclick="alert('Sorry, this item is out of stock.'); return false;"
+                  {% else %}
+                    href="{% url 'add_to_cart' productFound.id %}"
+                  {% endif %}
                 >
+                  <span id="element-id-64-">Add to Cart</span>
+                </a>
               </p>
             
           </div>
         </div>
 
         <br/>
-      
+      </div>
         {% endfor %}
-      </ul>
+    </div>
 
 
 

@@ -137,18 +137,24 @@
               </div>
               <div style="margin-bottom: 15px; padding: 10px">
                 <a
-                  id="button-id-64-"
-                  style="padding: 10px; margin-top: 20px; width: 150px"
-                  data-element-type="button"
+                id="button-id-64-"
+                style="padding: 10px; margin-top: 20px; width: 150px"
+                data-element-type="button"
+                {% if pr.stock_quantity == 0 %}
+                  onclick="alert('Sorry, this item is out of stock.'); return false;"
+                {% else %}
                   href="{% url 'add_to_cart' pr.id %}"
-                >
-                  <span id="element-id-64-">Add to Cart</span>
-                </a>
+                {% endif %}
+              >
+                <span id="element-id-64-">Add to Cart</span>
+              </a>
+
+
                 <a
                   id="button-id-64-"
                   style="padding: 10px; margin-top: 20px; width: 150px"
                   data-element-type="button"
-                  href="{% url 'add_to_cart' pr.id %}"
+                  href="//twitter.com/"
                   ><span id="element-id-64-">More Info</span></a
                 >
               </div>

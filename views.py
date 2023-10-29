@@ -12,6 +12,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Cart
+from django.contrib import messages
 # Create your views here.
 
 
@@ -138,10 +139,23 @@ def add_to_cart(request, product_id):
     cart_item, created = Cart.objects.get_or_create(
         user=request.user, product=product, defaults={'quantity': 1})
 
-    # If the item is already in the cart, increase the quantity
-    if not created:
-        cart_item.quantity += 1
-        cart_item.save()
+    # Check if the stock is 0
+    if product.stock_quantity == 0:
+        messages.warning(
+            request, f"Sorry, {product.product_name} is out of stock.")
+    else:
+        # Check if adding more items exceeds the stock limit
+        if not created and cart_item.quantity + 1 > product.stock_quantity:
+            messages.warning(
+                request, f"Sorry, there is not enough stock for {product.product_name}.")
+        elif created and cart_item.quantity > product.stock_quantity:
+            messages.warning(
+                request, f"Sorry, there is not enough stock for {product.product_name}.")
+        else:
+            # If the item is already in the cart, increase the quantity
+            if not created:
+                cart_item.quantity += 1
+                cart_item.save()
 
     # You can change this URL to the page where the user can view their cart
     return redirect('/view_cart')
@@ -159,6 +173,13 @@ def view_cart(request):
 def remove_from_cart(request, cart_item_id):
     cart_item = get_object_or_404(Cart, pk=cart_item_id, user=request.user)
     cart_item.delete()
+
+    # Check if the cart is empty after removing the item
+    if Cart.objects.filter(user=request.user).count() == 0:
+        messages.info(request, "Your cart is now empty.")
+        # Replace 'catProducts' with the appropriate URL name for your product page
+        return redirect('catProducts')
+
     return redirect('/view_cart')
 
 
@@ -166,10 +187,12 @@ def remove_from_cart(request, cart_item_id):
 def reduce_quantity(request, cart_item_id):
     cart_item = get_object_or_404(Cart, pk=cart_item_id, user=request.user)
 
-    # If the quantity is more than 1, reduce it, else remove from cart
-    if cart_item.quantity > 1:
+    # If the quantity is more than 0, reduce it
+    if cart_item.quantity > 0:
         cart_item.quantity -= 1
         cart_item.save()
+    else:
+        messages.warning(request, "The quantity cannot be reduced further.")
 
     return redirect('/view_cart')
 
@@ -177,8 +200,14 @@ def reduce_quantity(request, cart_item_id):
 @login_required
 def increase_quantity(request, cart_item_id):
     cart_item = get_object_or_404(Cart, pk=cart_item_id, user=request.user)
-    cart_item.quantity += 1
-    cart_item.save()
+
+    # Check if increasing the quantity exceeds the stock limit
+    if cart_item.quantity + 1 > cart_item.product.stock_quantity:
+        messages.warning(
+            request, f"Sorry, there is not enough stock for {cart_item.product.product_name}.")
+    else:
+        cart_item.quantity += 1
+        cart_item.save()
 
     return redirect('view_cart')
 
@@ -187,20 +216,28 @@ def increase_quantity(request, cart_item_id):
 def clear_cart(request):
     cart_items = Cart.objects.filter(user=request.user)
     cart_items.delete()
-    return redirect('view_cart')
+    return redirect('catProducts')
 
 
 @login_required
 def checkout(request):
     cart_items = Cart.objects.filter(user=request.user)
 
-    # Update stock quantity and remove items from the cart during checkout
-    for cart_item in cart_items:
-        product = cart_item.product
-        product.stock_quantity -= cart_item.quantity
-        product.save()
+    # Check if stock quantity is negative before updating
+    if any(cart_item.product.stock_quantity - cart_item.quantity < 0 for cart_item in cart_items):
+        messages.warning(
+            request, "Sorry, one or more items in your cart have insufficient stock.")
+    else:
+        # Update stock quantity and remove items from the cart during checkout
+        for cart_item in cart_items:
+            product = cart_item.product
+            product.stock_quantity -= cart_item.quantity
+            product.save()
 
-    # Clear the cart after checkout
-    cart_items.delete()
+        # Clear the cart after checkout
+        cart_items.delete()
 
+        return redirect('catProducts')
+
+    # Redirect to the cart view if checkout is unsuccessful
     return redirect('/view_cart')
