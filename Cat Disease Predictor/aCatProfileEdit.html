@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Catto Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="{% static 'catProfile-elements.css' %}" />
+    <link rel="stylesheet" href="{% static 'catProfile-style.css' %}" />
+  </head>
+  <body id="root-container" style="margin: 0">
+    {% block content %} {% if user.is_authenticated %} Hi {{ user.username }}!
+    {% else %}
+    <h1>Login Unsuccessful</h1>
+    {% endif %} {% endblock %}
+
+    <div
+      data-element-behavior="menu"
+      id="menu-id-51-"
+      data-element-type="section"
+    >
+      <div id="container-id-37-" data-element-type="container">
+
+        <a
+          id="image-id-38-"
+          data-element-type="image"
+          class="clickable"
+          href="{% url 'index' %}"
+          ><img id="element-id-39-" src="{% static '-project-image-4.png' %}"
+        /></a>
+        <div id="container-id-40-" data-element-type="container">
+          <a
+            id="button-id-4-"
+            data-element-type="button"
+            href="{% url 'aCatProfile' %}"
+            ><span id="element-id-3-">Catto Profile</span></a
+          >
+          <a
+          id="button-id-4-"
+          data-element-type="button"
+          href="{% url 'Cat_Diagnosis' %}"
+          ><span id="element-id-3-">Cat_Diagnosis</span></a>
+          
+          <a
+            id="button-id-43-"
+            data-element-type="button"
+            href="{% url 'vetPoint' %}"
+            ><span id="element-id-44-">Vet Point</span></a
+          >
+          <a
+          id="button-id-9-"
+          data-element-type="button"
+          href="{% url 'catProducts' %}"
+          ><span id="element-id-8-">Products</span></a
+          >
+          <a
+          id="button-id-9-"
+          data-element-type="button"
+          href="{% url 'view_cart' %}"
+          ><span id="element-id-8-">Cart</span></a
+          >
+          <a
+            id="button-id-45-"
+            data-element-type="button"
+            href="{% url 'aboutUs' %}"
+            ><span id="element-id-46-">About Us</span></a
+          >
+
+          <a id="button-id-49-" data-element-type="button" href="/signout"
+            ><span id="element-id-50-">Log out</span></a
+          >
+        </div>
+      </div>
+    </div>
+    <div id="content-container">
+
+
+      <!--Profile -->
+
+
+      <div class="container rounded bg-white mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-3 border-right">
+              
+              
+                  
+                  
+            </div>
+
+            <div class="col-md-5 border-right" style="margin:5em">
+
+              {% if submitted %}
+
+              Success!!!!!
+
+
+              {% else %}     
+
+              <form action="" method=POST enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                
+                <!--
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right">Profile Settings</h4>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" placeholder="name" value=""></div>
+                        <div class="col-md-6"><label class="labels">Email</label><input type="text" class="form-control" value="" placeholder="email"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><label class="labels">Phone</label><input type="text" class="form-control" placeholder="enter phone number" value=""></div>
+                        <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control" placeholder="enter address" value=""></div>
+                        <div class="col-md-12"><label class="labels">Cat Name</label><input type="text" class="form-control" placeholder="enter cat name" value=""></div>
+                        <div class="col-md-12"><label class="labels">Cat Age</label><input type="text" class="form-control" placeholder="enter cat age" value=""></div>
+                        <div class="col-md-12"><label class="labels">Cat Breed</label><input type="text" class="form-control" placeholder="enter cat breed" value=""></div>
+                        
+                    </div>
+                -->
+                    
+                    <div class="mt-5 text-center"><a href="{% url 'aCatProfile' %}"><input class="btn btn-primary profile-button" type="submit"></a></div>
+                </div>
+
+              </form>
+              {% endif %}
+
+            </div>
+            
+        </div>
+    </div>
+    </div>
+    </div>
+
+
+
+      
+
+
+      <!-- FOOTER -->
+      <div id="section-id-164-" data-element-type="section">
+        <div id="container-id-140-" data-element-type="container">
+          <div id="container-id-141-" data-element-type="container">
+            <div id="container-id-142-" data-element-type="container">
+              <p id="text-id-143-" data-element-type="text">BilaiBD</p>
+              <div id="container-id-144-" data-element-type="container">
+                <a
+                  id="button-id-145-"
+                  data-element-type="button"
+                  href="index.html"
+                  ><span id="element-id-146-">index</span></a
+                >
+              </div>
+            </div>
+            <div id="container-id-147-" data-element-type="container">
+              <p id="text-id-148-" data-element-type="text">Features</p>
+              <div id="container-id-149-" data-element-type="container">
+                <a
+                  id="button-id-150-"
+                  data-element-type="button"
+                  href="profile.html"
+                  ><span id="element-id-151-">Cat Profile</span></a
+                ><a
+                  id="button-id-152-"
+                  data-element-type="button"
+                  href="catDiagnosis.html"
+                  ><span id="element-id-153-">Cat Diagnosis</span></a
+                ><a
+                  id="button-id-154-"
+                  data-element-type="button"
+                  href="vetPoint.html"
+                  ><span id="element-id-155-">Vet Point</span></a
+                >
+              </div>
+            </div>
+            <div id="container-id-156-" data-element-type="container">
+              <p id="text-id-157-" data-element-type="text">Contact</p>
+              <div id="container-id-158-" data-element-type="container">
+                <a
+                  id="button-id-159-"
+                  data-element-type="button"
+                  href="mailto:kazi.rahman11@northsouth.edu"
+                  ><span id="element-id-160-">Email</span></a
+                ><a
+                  id="button-id-161-"
+                  data-element-type="button"
+                  href="https://twitter.com/"
+                  ><span id="element-id-162-">Facebook</span></a
+                >
+              </div>
+            </div>
+          </div>
+          <p id="text-id-163-" data-element-type="text">
+            © 2023 BilaiBD, Inc. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

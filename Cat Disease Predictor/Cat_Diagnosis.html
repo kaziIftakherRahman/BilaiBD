@@ -1,0 +1,265 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Disease Prediction</title>
+        <style>
+        body {
+
+            {% block content %}
+            {% if user.is_authenticated %}
+            Hi {{ user.username }}!
+            {% else %}
+            <h1>Login Unsuccessful</h1>
+            {% endif %}
+            {% endblock %}
+        
+            font-family: Arial, sans-serif;
+            background-color: #e6f7ff; /* Light blue background */
+            text-align: center;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-family: 'Trebuchet MS', sans-serif;
+            color: #007BFF;
+            font-size: 28px;
+        }
+
+        form {
+            text-align: left;
+            padding: 20px; /* Added padding for the form */
+            background-color: #f5f5f5; /* Light gray background for the form */
+            border-radius: 5px; /* Rounded corners for the form */
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        select, button {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+        }
+
+        /* Styling for option elements */
+        select option {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        /* Different colors for options */
+        select option:nth-child(odd) {
+            background-color: #f2f2f2; /* Light gray for odd options */
+        }
+
+        select option:nth-child(even) {
+            background-color: #ffffff; /* White for even options */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Add more styling as needed */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cat Disease Prediction</h1>
+        <form action="{% url 'results' %}" method="post">
+            {% csrf_token %}
+            <label for="symptom1">Symptom 1:</label>
+            <select id="symptom1" name="symptom1">
+                <option value="Lumps">Lumps</option>
+                <option value="Swelling">Swelling</option>
+                <option value="Skin_infections">Skin_infections</option>
+                <option value="Abnormal _discharge">Abnormal _discharge</option>
+                <option value="Bad_breath">Bad_breath</option>
+                <option value="Weight_loss">Weight_loss</option>
+                <option value="Weakness">Weakness</option>
+                <option value="Vomiting">Vomiting</option>
+                <option value="Loss_of_appetite">Loss_of_appetite</option>
+                <option value="Excessive_thurst">Excessive_thurst</option>
+                <option value="Increased_urination">Increased_urination</option>
+                <option value="Unsually_sweet_smelling_breath">Unsually_sweet_smelling_breath</option>
+                <option value="Lethargy">Lethargy</option>
+                <option value="Dehydration">Dehydration</option>
+                <option value="Urinary_tract_infection">Urinary_tract_infection</option>
+                <option value="Enlarged_lymph_nodes">Enlarged_lymph_nodes</option>
+                <option value="Fever">Fever</option>
+                <option value="Anemia">Anemia</option>
+                <option value="Diarrhea">Diarrhea</option>
+                <option value="Eye_problem">Eye_problem</option>
+                <option value="Dental_disease">Dental_disease</option>
+                <option value="Wounds_wont_heal">Wounds_wont_heal</option>
+                <option value="Skin_redness">Skin_redness</option>
+                <option value="Behaviour_change">Behaviour_change</option>
+                <option value="Abcesses">Abcesses</option>
+                <option value="Seizures">Seizures</option>
+                <option value="Jaundice">Jaundice</option>
+                <option value="Increased_vocalization">Increased_vocalization</option>
+
+            </select>
+
+            <label for="symptom2">Symptom 2:</label>
+            <select id="symptom2" name="symptom2">
+               <option value="Lumps">Lumps</option>
+                <option value="Swelling">Swelling</option>
+                <option value="Skin_infections">Skin_infections</option>
+                <option value="Abnormal _discharge">Abnormal _discharge</option>
+                <option value="Bad_breath">Bad_breath</option>
+                <option value="Weight_loss">Weight_loss</option>
+                <option value="Weakness">Weakness</option>
+                <option value="Vomiting">Vomiting</option>
+                <option value="Loss_of_appetite">Loss_of_appetite</option>
+                <option value="Excessive_thurst">Excessive_thurst</option>
+                <option value="Increased_urination">Increased_urination</option>
+                <option value="Unsually_sweet_smelling_breath">Unsually_sweet_smelling_breath</option>
+                <option value="Lethargy">Lethargy</option>
+                <option value="Dehydration">Dehydration</option>
+                <option value="Urinary_tract_infection">Urinary_tract_infection</option>
+                <option value="Enlarged_lymph_nodes">Enlarged_lymph_nodes</option>
+                <option value="Fever">Fever</option>
+                <option value="Anemia">Anemia</option>
+                <option value="Diarrhea">Diarrhea</option>
+                <option value="Eye_problem">Eye_problem</option>
+                <option value="Dental_disease">Dental_disease</option>
+                <option value="Wounds_wont_heal">Wounds_wont_heal</option>
+                <option value="Skin_redness">Skin_redness</option>
+                <option value="Behaviour_change">Behaviour_change</option>
+                <option value="Abcesses">Abcesses</option>
+                <option value="Seizures">Seizures</option>
+                <option value="Jaundice">Jaundice</option>
+                <option value="Increased_vocalization">Increased_vocalization</option>
+            </select>
+
+            <label for="symptom3">Symptom 3:</label>
+            <select id="symptom3" name="symptom3">
+              <option value="Lumps">Lumps</option>
+                <option value="Swelling">Swelling</option>
+                <option value="Skin_infections">Skin_infections</option>
+                <option value="Abnormal _discharge">Abnormal _discharge</option>
+                <option value="Bad_breath">Bad_breath</option>
+                <option value="Weight_loss">Weight_loss</option>
+                <option value="Weakness">Weakness</option>
+                <option value="Vomiting">Vomiting</option>
+                <option value="Loss_of_appetite">Loss_of_appetite</option>
+                <option value="Excessive_thurst">Excessive_thurst</option>
+                <option value="Increased_urination">Increased_urination</option>
+                <option value="Unsually_sweet_smelling_breath">Unsually_sweet_smelling_breath</option>
+                <option value="Lethargy">Lethargy</option>
+                <option value="Dehydration">Dehydration</option>
+                <option value="Urinary_tract_infection">Urinary_tract_infection</option>
+                <option value="Enlarged_lymph_nodes">Enlarged_lymph_nodes</option>
+                <option value="Fever">Fever</option>
+                <option value="Anemia">Anemia</option>
+                <option value="Diarrhea">Diarrhea</option>
+                <option value="Eye_problem">Eye_problem</option>
+                <option value="Dental_disease">Dental_disease</option>
+                <option value="Wounds_wont_heal">Wounds_wont_heal</option>
+                <option value="Skin_redness">Skin_redness</option>
+                <option value="Behaviour_change">Behaviour_change</option>
+                <option value="Abcesses">Abcesses</option>
+                <option value="Seizures">Seizures</option>
+                <option value="Jaundice">Jaundice</option>
+                <option value="Increased_vocalization">Increased_vocalization</option>
+            </select>
+
+            <label for="symptom4">Symptom 4:</label>
+            <select id="symptom4" name="symptom4">
+                <option value="Lumps">Lumps</option>
+                <option value="Swelling">Swelling</option>
+                <option value="Skin_infections">Skin_infections</option>
+                <option value="Abnormal _discharge">Abnormal _discharge</option>
+                <option value="Bad_breath">Bad_breath</option>
+                <option value="Weight_loss">Weight_loss</option>
+                <option value="Weakness">Weakness</option>
+                <option value="Vomiting">Vomiting</option>
+                <option value="Loss_of_appetite">Loss_of_appetite</option>
+                <option value="Excessive_thurst">Excessive_thurst</option>
+                <option value="Increased_urination">Increased_urination</option>
+                <option value="Unsually_sweet_smelling_breath">Unsually_sweet_smelling_breath</option>
+                <option value="Lethargy">Lethargy</option>
+                <option value="Dehydration">Dehydration</option>
+                <option value="Urinary_tract_infection">Urinary_tract_infection</option>
+                <option value="Enlarged_lymph_nodes">Enlarged_lymph_nodes</option>
+                <option value="Fever">Fever</option>
+                <option value="Anemia">Anemia</option>
+                <option value="Diarrhea">Diarrhea</option>
+                <option value="Eye_problem">Eye_problem</option>
+                <option value="Dental_disease">Dental_disease</option>
+                <option value="Wounds_wont_heal">Wounds_wont_heal</option>
+                <option value="Skin_redness">Skin_redness</option>
+                <option value="Behaviour_change">Behaviour_change</option>
+                <option value="Abcesses">Abcesses</option>
+                <option value="Seizures">Seizures</option>
+                <option value="Jaundice">Jaundice</option>
+                <option value="Increased_vocalization">Increased_vocalization</option>
+            </select>
+
+            <label for="symptom5">Symptom 5:</label>
+            <select id="symptom5" name="symptom5">
+                <option value="Lumps">Lumps</option>
+                <option value="Swelling">Swelling</option>
+                <option value="Skin_infections">Skin_infections</option>
+                <option value="Abnormal _discharge">Abnormal _discharge</option>
+                <option value="Bad_breath">Bad_breath</option>
+                <option value="Weight_loss">Weight_loss</option>
+                <option value="Weakness">Weakness</option>
+                <option value="Vomiting">Vomiting</option>
+                <option value="Loss_of_appetite">Loss_of_appetite</option>
+                <option value="Excessive_thurst">Excessive_thurst</option>
+                <option value="Increased_urination">Increased_urination</option>
+                <option value="Unsually_sweet_smelling_breath">Unsually_sweet_smelling_breath</option>
+                <option value="Lethargy">Lethargy</option>
+                <option value="Dehydration">Dehydration</option>
+                <option value="Urinary_tract_infection">Urinary_tract_infection</option>
+                <option value="Enlarged_lymph_nodes">Enlarged_lymph_nodes</option>
+                <option value="Fever">Fever</option>
+                <option value="Anemia">Anemia</option>
+                <option value="Diarrhea">Diarrhea</option>
+                <option value="Eye_problem">Eye_problem</option>
+                <option value="Dental_disease">Dental_disease</option>
+                <option value="Wounds_wont_heal">Wounds_wont_heal</option>
+                <option value="Skin_redness">Skin_redness</option>
+                <option value="Behaviour_change">Behaviour_change</option>
+                <option value="Abcesses">Abcesses</option>
+                <option value="Seizures">Seizures</option>
+                <option value="Jaundice">Jaundice</option>
+                <option value="Increased_vocalization">Increased_vocalization</option>
+            </select>
+
+            <button type="submit">Predict</button>
+        </form>
+    </div>
+</body>
+</html>
