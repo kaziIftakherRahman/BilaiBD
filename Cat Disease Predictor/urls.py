@@ -51,7 +51,6 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
     
     path('Cat_Diagnosis/', views.Cat_Diagnosis, name='Cat_Diagnosis'),
-    path('vetPoint/Cat_Diagnosis/', views.Cat_Diagnosis, name='Cat_Diagnosis'),
     path('results/', views.results, name='results'),
    
 
