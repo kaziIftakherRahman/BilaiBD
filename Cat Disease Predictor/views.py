@@ -22,14 +22,11 @@ from sklearn.naive_bayes import MultinomialNB
 
 
 
-# Create your views here.
-
-
 from django.shortcuts import render
 
 def results(request):
     if request.method == 'POST':
-        # Get user input from the form
+       
         symptoms = [
             request.POST.get('symptom1', ''),
             request.POST.get('symptom2', ''),
@@ -37,8 +34,6 @@ def results(request):
             request.POST.get('symptom4', ''),
             request.POST.get('symptom5', ''),
         ]
-
-        # Preprocess user input
         l1 = ['Lumps', 'Swelling', 'Skin_infections', 'Abnormal _discharge', 'Bad_breath', 'Weight_loss', 'Weakness',
               'Vomiting', 'Loss_of_appetite', 'Excessive_thirst', 'Increased_urination', 'Unusually_sweet_smelling_breath',
               'Lethargy', 'Dehydration', 'Urinary_tract_infection', 'Enlarged_lymph_nodes', 'Fever', 'Anemia', 'Diarrhea',
@@ -46,15 +41,14 @@ def results(request):
               'Seizures', 'Jaundice', 'Increased_vocalization']
 
         user_input = [1 if symptom in symptoms else 0 for symptom in l1]
-
-        # Load the trained model from the Pickle file
+                   
         with open('model.pkl', 'rb') as model_file:
             gnb = pickle.load(model_file)
 
-        # Predict the disease
+       
         predicted_disease = gnb.predict([user_input])[0]
 
-        # Map the disease code back to the disease name
+      
         diseases = ['Cancer', 'Diabates', 'FIV', 'FelV', 'Heartworm', 'Rabies', 'Worms']
         disease_name = diseases[predicted_disease]
       
@@ -75,11 +69,10 @@ def results(request):
         elif disease_name == 'Worms':
             suggestions = ["Isolate the cat to prevent transmission.",""," Consult a vet immediately.",""," Follow local rabies quarantine protocols. ","","Ensure your pets are up-to-date on rabies vaccines.",""," Avoid direct contact with the infected cat. ","","Report the incident to local authorities. "]
 
-        # Render the results template
+        
         return render(request, 'results.html', {'predicted_disease': disease_name, 'suggestions': suggestions})
     else:
-        return render(request, 'results.html')  # Render an empty results pagey
-
+        return render(request, 'results.html')  
 
 
 # Create your views here.
