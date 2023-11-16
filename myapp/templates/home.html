@@ -1,0 +1,12 @@
+{%extends 'base.html'%} {%block title %}Login{%endblock %} {%block content%}
+<h1></h1>
+{% if user.is_authenticated %} Hi {{ user.username }}!
+<a href="/index" class="btn btn-primary">Enter Site</a>
+
+{% else %}
+<a href="/signin" class="btn btn-primary"
+  ><span class="glyphicon glyphicon-log-in"></span>Login</a
+>
+<a href="{% url 'signup' %}" class="btn btn-success">Signup</a>
+
+{% endif %} {%endblock%}
