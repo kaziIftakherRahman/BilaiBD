@@ -177,8 +177,6 @@ def add_to_cart(request, product_id):
             if not created:
                 cart_item.quantity += 1
                 cart_item.save()
-
-    # You can change this URL to the page where the user can view their cart
     return redirect('/view_cart')
 
 
@@ -198,7 +196,7 @@ def remove_from_cart(request, cart_item_id):
     # Check if the cart is empty after removing the item
     if Cart.objects.filter(user=request.user).count() == 0:
         messages.info(request, "Your cart is now empty.")
-        return redirect('catProducts')  # Replace 'catProducts' with the appropriate URL name for your product page
+        return redirect('catProducts') 
 
     return redirect('/view_cart')
 
@@ -279,7 +277,6 @@ def aCatProfileAdd(request):
             form.save()
             return redirect(aCatProfile)
     else:
-        # Initialize the form with the logged-in user's username
         initial_data = {'user': request.user.id}
         form = ProfileForm(initial=initial_data)
         if 'submitted' in request.GET:
