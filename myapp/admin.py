@@ -15,3 +15,10 @@ class ProfileAdmin(admin.ModelAdmin):
 admin.site.register(userProfile, ProfileAdmin)
 
 
+
+class ProductsAdmin(admin.ModelAdmin):
+    list_display = ('product_name', 'catagory_id',
+                    'description', 'price', 'stock_quantity', 'productPic')
+
+
+admin.site.register(products, ProductsAdmin)
