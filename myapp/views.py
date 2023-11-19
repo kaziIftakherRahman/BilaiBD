@@ -24,6 +24,62 @@ from sklearn.naive_bayes import MultinomialNB
 
 from django.shortcuts import render
 
+def results(request):
+    if request.method == 'POST':
+       
+        symptoms = [
+            request.POST.get('symptom1', ''),
+            request.POST.get('symptom2', ''),
+            request.POST.get('symptom3', ''),
+            request.POST.get('symptom4', ''),
+            request.POST.get('symptom5', ''),
+        ]
+        l1 = ['Lumps', 'Swelling', 'Skin_infections', 'Abnormal _discharge', 'Bad_breath', 'Weight_loss', 'Weakness',
+              'Vomiting', 'Loss_of_appetite', 'Excessive_thirst', 'Increased_urination', 'Unusually_sweet_smelling_breath',
+              'Lethargy', 'Dehydration', 'Urinary_tract_infection', 'Enlarged_lymph_nodes', 'Fever', 'Anemia', 'Diarrhea',
+              'Eye_problem', 'Dental_disease', 'Wounds_wont_heal', 'Skin_redness', 'Behavior_change', 'Abscesses',
+              'Seizures', 'Jaundice', 'Increased_vocalization']
+
+        user_input = [1 if symptom in symptoms else 0 for symptom in l1]
+                   
+        with open('ML-Model/model.pkl', 'rb') as model_file:
+            gnb = pickle.load(model_file)
+
+       
+        predicted_disease = gnb.predict([user_input])[0]
+
+      
+        diseases = ['Cancer', 'Diabates', 'FIV', 'FelV', 'Heartworm', 'Rabies', 'Worms']
+        disease_name = diseases[predicted_disease]
+      
+        suggestions = []
+        
+        if disease_name == 'Cancer':
+            suggestions = ["Pain Management: Ensure your cat is comfortable with prescribed pain medication.","","Diet: Provide a suitable diet recommended by your vet.", "","Hydration: Encourage drinking and consider subcutaneous fluids if needed.", "", "Rest: Offer a comfortable resting place; cats with cancer may need extra rest.", "","Regular Checkups: Maintain vet checkups to monitor your cat's condition.", "","Side Effects: Be aware of treatment side effects and discuss with your vet.","","Emotional Support: Give your cat extra attention and comfort." ,"","Stress Reduction: Create a calm and stress-free environment.", "","Quality of Life: Continuously assess your cat's well-being and discuss euthanasia when necessary."]
+        elif disease_name == 'Diabates':
+            suggestions = ["Vet Care: Consult a vet for a diabetes diagnosis and treatment plan." ,"","Insulin Therapy: Administer insulin as prescribed by your vet." ,"","Balanced Diet: Feed a consistent, low-carb diet and avoid free-feeding." ,"","Regular Monitoring: Monitor blood glucose levels regularly." ,"","Exercise: Encourage daily exercise to help regulate blood sugar.", "","Stress Reduction: Minimize stress in your cat's environment." ,"","Hydration: Ensure access to fresh water at all times." ,"","Vet Checkups: Schedule regular vet checkups to assess progress."]
+        elif disease_name == 'FIV':
+            suggestions = ["Regular Vet Checkups: Schedule routine vet visits for monitoring.", "","Balanced Diet: Provide high-quality, balanced cat food.","", "Indoor Living: Keep your cat indoors to prevent disease spread.", "","Stress Reduction: Minimize stress and provide a calm environment." ,"","Hydration: Ensure access to clean, fresh water at all times.",""," Prompt Treatment: Treat any infections promptly.",""," Love and Care: Give your cat love and attention.","", "Spaying/Neutering: Spay/neuter to prevent virus transmission."]
+        elif disease_name == 'FelV':
+            suggestions = ["Regular Vet Checkups: Schedule routine vet visits for monitoring.",""," Balanced Diet: Provide high-quality, nutritious cat food." ,"","Indoor Living: Keep your cat indoors to prevent disease spread.", "","Isolation: Separate FeLV-positive cats from uninfected ones.",""," Hydration: Ensure access to clean, fresh water." ,"","Prompt Treatment: Treat infections and illnesses promptly.",""," Love and Care: Give your cat love and attention." ,"","Spaying/Neutering: Spay/neuter to prevent virus transmission. "]
+        elif disease_name == 'Heartworm':
+            suggestions = ["Veterinary Care: Consult a vet for diagnosis and treatment.", "","Medications: Administer prescribed heartworm medications.","", "Rest: Allow your cat to rest and recover.",""," Preventative Measures: Use preventatives to avoid future infections.",""," Indoor Living: Keep your cat indoors to prevent exposure.",""," Regular Checkups: Schedule follow-up vet appointments. "]
+        elif disease_name == 'Rabies':
+            suggestions = ["Isolation: Isolate the cat to prevent transmission.",""," Consult a Vet: Seek immediate veterinary assistance. ","","Quarantine: Follow local rabies quarantine protocols.",""," Vaccination: Ensure your pets are up-to-date on rabies vaccines. ","","Safety: Avoid direct contact with the infected cat. ","","Contact Authorities: Report the incident to local authorities. "]
+        elif disease_name == 'Worms':
+            suggestions = ["Isolate the cat to prevent transmission.",""," Consult a vet immediately.",""," Follow local rabies quarantine protocols. ","","Ensure your pets are up-to-date on rabies vaccines.",""," Avoid direct contact with the infected cat. ","","Report the incident to local authorities. "]
+
+        
+        return render(request, 'results.html', {'predicted_disease': disease_name, 'suggestions': suggestions})
+    else:
+        return render(request, 'results.html') 
+
+def Cat_Diagnosis(request):
+    return render(request, 'Cat_Diagnosis.html') 
+
+
+
+
 
 
 # Create your views here.
