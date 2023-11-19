@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>aboutus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
+    <link
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css "
+
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'addToCart-elements.css' %}" />
+    <link rel="stylesheet" href="{% static 'addToCart-style.css' %}" />
+    <link rel="stylesheet" href="{% static 'cart.css' %}" />
+  </head>
+  <body id="root-container" style="margin: 0">
+    {% block content %} {% if user.is_authenticated %}
+    {% else %}
+    <h1>Login Unsuccessful</h1>
+    {% endif %} {% endblock %}
+
+  {% if cart_items %}
+     
+
+    <div class="card">
+      
+      <div class="row">
+          <div class="col-md-8 cart">
+              <div class="title">
+                  <div class="row">
+                      <div class="col"><h4><b>Your Cart</b></h4></div>
+                      
+                  </div>
+              </div>    
+
+
+              {% for cart_item in cart_items %}
+              <div class="row border-top border-bottom">
+                  <div class="row main align-items-center">
+                    <!--product image-->
+                      <div class="col-2"><img class="img-fluid" src="{{ cart_item.product.productPic.url }}"></div>
+                      <div class="col">
+                        <!--product Name-->
+                          <div class="row">{{ cart_item.product.product_name }}</div>
+                      </div>
+                      <div class="col">
+                          <!--decrease product-->
+                          <a href="{% url 'reduce_quantity' cart_item.id %}">-</a>
+                          <a href="#" class="border">{{ cart_item.quantity }}</a>
+                          <!--increase product-->
+                          <a href="{% url 'increase_quantity' cart_item.id %}">+</a>
+                      </div>
+                      <div class="col">{{ cart_item.product.price }}
+                        <!--remove product from cart-->
+                        <span class="close">
+                          <a href="{% url 'remove_from_cart' cart_item.id %}" >&#10005;</a>
+                        </span>
+                      </div>
+                  </div>
+              </div>
+              {% endfor %}
+
+              <!-- Stock done error msg -->
+              {% if messages %}
+                <ul class="messages">
+                  {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+              
+
+
+              <div class="back-to-shop">
+
+                <a href="{% url 'catProducts' %}"><button type="button" class="btn btn-outline-dark">Add more products</button></a>
+                
+                <form action="{% url 'clear_cart' %}" method="post">
+                  {% csrf_token %}
+                  <!--clear the cart-->
+                  <button class="btn btn-outline-dark" type="submit">Clear Cart</button>
+                </form>
+                
+              </div>
+          </div>
+
+
+          <div class="col-md-4 summary">
+              <div><h5><b>Summary</b></h5></div>
+  
+              <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                  <div class="col"><strong>TOTAL PRICE</strong></div>
+                  <!--total price-->
+                  <div class="col text-right">{{ grand_total_cart_price|floatformat:2 }}</div>
+              </div>
+                <!-- checkout button -->
+              <form action="{% url 'checkout' %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-outline-dark" type="submit">Checkout</button>
+              </form>
+              
+
+          </div>
+      </div>
+      
+
+  </div>
+
+  {% else %}
+  <div style="padding:25em; margin-left:17em">
+    <p>
+      <h1>Proceed to products?</h1>
+      <a href="{% url 'catProducts' %}"><button type="button" class="btn btn-outline-dark">Product page</button></a>
+    </p>
+  </div>    
+      {% endif %}
+   
+  </body>
+</html>
